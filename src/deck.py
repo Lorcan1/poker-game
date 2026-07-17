@@ -18,6 +18,9 @@ class Deck:
     def __getitem__(self, position):
         return self._cards[position]
     
+    def __str__(self):
+        return f"{self.rank} of {self.suit}"
+    
     def deal_card(self):
         card = choice(self._cards)
         self._cards.remove(card)
