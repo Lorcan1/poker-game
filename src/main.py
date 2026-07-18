@@ -22,3 +22,5 @@ if __name__ == '__main__':
     # game.river()
     # game.next_hand()
     game_loop.initialize_game()
+    game_loop.process_hand()
+    game_loop.reset()

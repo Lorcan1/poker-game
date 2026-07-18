@@ -1,6 +1,7 @@
 from player import Player
 
-class GameLoop():
+
+class GameLoop:
     def __init__(self, game):
         self.game = game
 
@@ -8,25 +9,35 @@ class GameLoop():
     def create_players():
         players = []
         create = True
-        while create: 
+        while create:
             print("Hello, welcome to Poker!")
             print("Create a player!")
             name = input("What's their name?: ")
             player = Player(name)
             players.append(player)
             print(f"Player {name} created succesfully!")
-            cancel = input("Press 'n' key to stop creating players otherwise press any other key to continue")
-            if cancel == 'n':
+            cancel = input(
+                "Press 'n' key to stop creating players otherwise press any other key to continue"
+            )
+            if cancel == "n":
                 create = False
                 print(f"Number of players: {len(players)}")
                 print("Player Names:")
-                for player in players: 
+                for player in players:
                     print(f"{player.name}")
         return players
-    
+
     @staticmethod
-    def preset_players(): 
-        player_name = ["Lorcan", "Arthur", "John", "Will", "Sally", "Sadie", "Bernadice"]
+    def preset_players():
+        player_name = [
+            "Lorcan",
+            "Arthur",
+            "John",
+            "Will",
+            "Sally",
+            "Sadie",
+            "Bernadice",
+        ]
         players = [Player(name) for name in player_name]
         print(f"Number of players: {len(players)}")
         print(f"{'#':<4}{'Player Names:':<12}")
@@ -34,18 +45,23 @@ class GameLoop():
         for i, player in enumerate(players, start=1):
             print(f"{i:<4}{player.name:<12}")
 
-        return players 
-    
+        return players
 
-    def initialize_game(self): #need to act pre_flop if protag is the small or big blind
+    def initialize_game(
+        self,
+    ):  # need to act pre_flop if protag is the small or big blind
         self.game.initialize_game()
-        self.game.handle_blinds()
-        self.game.pre_flop()
-        self.game.pre_flop_action()
+        self.game.initialize_blinds()
 
-        
+    def process_hand(self):
+        hand_in_progress = True
+        while hand_in_progress:
+            hand_in_progress = self.game.pre_flop()
+            self.game.pre_flop_action()
+            self.game.flop()
+            hand_in_progress = self.game.post_flop_action()
 
-
-    
-
-    
+    def reset(self):  # this needs to be tested
+        self.game.reset_players()
+        self.game.reset_game_state()  # needs to be processed
+        self.game.rotate_button()
